@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PagosTunes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        .blue-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to PagosTunes!</h1>
+    <p>Choose your language for the openings:</p>
+    <p>Not sure how to play? <span id="showPopup" style="text-decoration: underline; cursor: pointer;">Click here</span> to find out what to do.</p>
+    <a href="play.html?jpn" class="blue-button">Japanese</a>
+    <a href="play.html?eng" class="blue-button">English</a>
+
+    <div id="overlay"></div>
+    <div id="popup">
+        <p>once you select your language, it will start playing a random pokemon opening, your goal is to find out what that opening is and enter it in the box.</p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        document.getElementById('showPopup').addEventListener('click', function () {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        });
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
