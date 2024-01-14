@@ -85,20 +85,21 @@
         let points = 0;
         let jpnPersonalBest = 0;
         let answers;
-
+        let darkMode = false;
+    
         // Load Japanese personal best from local storage
         if (localStorage.getItem('jpnPersonalBest')) {
             jpnPersonalBest = parseInt(localStorage.getItem('jpnPersonalBest'));
             updateJpnPersonalBest();
         }
-
+    
         // Load answers from the provided JSON file
         fetch('/assets/jpnanswers.json')  // Adjust the path accordingly
             .then(response => response.json())
             .then(data => {
                 answers = data;
                 console.log('Answers loaded successfully:', answers);
-
+    
                 // Enable the 'Guess' button after answers are loaded
                 document.getElementById('guessButton').disabled = false;
             })
@@ -106,20 +107,20 @@
                 console.error('Error loading answers:', error);
                 alert('Error loading answers. Please check the console for details.');
             });
-
+    
         document.getElementById('playButton').addEventListener('click', function () {
             if (audio && !audio.paused) {
                 audio.pause();
                 audio.currentTime = 0;
             }
-
+    
             const randomIndex = Math.floor(Math.random() * 23) + 1;
             const randomMP3 = `/music/jpn/op${randomIndex}.mp3`;
-
+    
             audio = new Audio(randomMP3);
-
+    
             console.log('Attempting to play audio from:', randomMP3);
-
+    
             audio.play().then(() => {
                 console.log('Audio playback started successfully');
                 document.getElementById('stopButton').disabled = false;
@@ -129,7 +130,7 @@
                 console.error('Error playing audio:', error);
             });
         });
-
+    
         document.getElementById('stopButton').addEventListener('click', function () {
             if (audio && !audio.paused) {
                 audio.pause();
@@ -141,14 +142,14 @@
                 updateScore();
             }
         });
-
+    
         document.getElementById('guessButton').addEventListener('click', function () {
             const userGuess = document.getElementById('guessInput').value;
-
+    
             if (audio) {
                 audio.pause();  // Pause the audio when the user makes a guess
                 const audioName = audio.src.split('/').pop().split('.')[0];
-
+    
                 if (answers && audioName in answers) {
                     const correctAnswerTranslated = answers[audioName];
                     
@@ -156,7 +157,7 @@
                         points += 100;
                         console.log('Correct guess! Points:', points);
                         updateScore();
-
+    
                         if (points > jpnPersonalBest) {
                             jpnPersonalBest = points;
                             updateJpnPersonalBest();
@@ -174,33 +175,45 @@
                         console.log('Incorrect guess. Try again!');
                         console.log('Correct Answer:', correctAnswerTranslated);
                         points = 0; // Reset points to 0 for incorrect guesses
+                        updateScore();
                         document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                     }
                 } else {
                     console.error('Answer not found for audio:', audioName);
                 }
-
+    
                 // Re-enable the 'Play Random Song' button
                 document.getElementById('playButton').disabled = false;
             } else {
                 console.error('No audio playing. Press "Play Random Song" first.');
             }
-
+    
             document.getElementById('guessInput').value = '';
         });
-
+    
         document.getElementById('closePopup').addEventListener('click', function () {
             document.getElementById('popup').style.display = 'none';
         });
-
+    
+        document.getElementById('darkModeToggle').addEventListener('click', function () {
+            toggleDarkMode();
+        });
+    
         function updateScore() {
             document.getElementById('score').textContent = 'Score: ' + points;
         }
-
+    
         function updateJpnPersonalBest() {
             document.getElementById('jpnPersonalBest').textContent = 'JPN Personal Best: ' + jpnPersonalBest;
         }
+    
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.style.backgroundColor = darkMode ? '#222' : '#fff';
+            document.body.style.color = darkMode ? '#fff' : '#000';
+        }
     </script>
+    
 </body>
 
 </html>
