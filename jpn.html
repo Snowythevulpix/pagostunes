@@ -30,6 +30,22 @@
             padding: 5px;
             margin: 10px;
         }
+
+        #score {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        #jpnPersonalBest {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #message {
+            font-size: 16px;
+            margin-top: 10px;
+            color: red;
+        }
     </style>
 </head>
 
@@ -43,10 +59,21 @@
         <button class="blue-button" id="guessButton" disabled>Guess</button>
     </div>
 
+    <div id="score">Score: 0</div>
+    <div id="jpnPersonalBest">JPN Personal Best: 0</div>
+    <div id="message"></div>
+
     <script>
         let audio = null;
         let points = 0;
+        let jpnPersonalBest = 0;
         let answers;
+
+        // Load Japanese personal best from local storage
+        if (localStorage.getItem('jpnPersonalBest')) {
+            jpnPersonalBest = parseInt(localStorage.getItem('jpnPersonalBest'));
+            updateJpnPersonalBest();
+        }
 
         // Load answers from the provided JSON file
         fetch('/assets/jpnanswers.json')  // Adjust the path accordingly
@@ -79,6 +106,7 @@
             audio.play().then(() => {
                 console.log('Audio playback started successfully');
                 document.getElementById('stopButton').disabled = false;
+                document.getElementById('message').textContent = ''; // Clear previous messages
             }).catch(error => {
                 console.error('Error playing audio:', error);
             });
@@ -97,6 +125,7 @@
             const userGuess = document.getElementById('guessInput').value;
 
             if (audio) {
+                audio.pause();  // Pause the audio when the user makes a guess
                 const audioName = audio.src.split('/').pop().split('.')[0];
 
                 if (answers && audioName in answers) {
@@ -105,9 +134,22 @@
                     if (userGuess.toLowerCase() === correctAnswerTranslated.toLowerCase()) {
                         points += 100;
                         console.log('Correct guess! Points:', points);
+                        updateScore();
+
+                        if (points > jpnPersonalBest) {
+                            jpnPersonalBest = points;
+                            updateJpnPersonalBest();
+                            // Save Japanese personal best to local storage
+                            localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
+                        }
+                        
+                        document.getElementById('message').textContent = ''; // Clear previous messages
                     } else {
                         console.log('Incorrect guess. Try again!');
                         console.log('Correct Answer:', correctAnswerTranslated);
+                        points = 0; // Reset points to 0 for incorrect guesses
+                        updateScore();
+                        document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                     }
                 } else {
                     console.error('Answer not found for audio:', audioName);
@@ -118,6 +160,14 @@
 
             document.getElementById('guessInput').value = '';
         });
+
+        function updateScore() {
+            document.getElementById('score').textContent = 'Score: ' + points;
+        }
+
+        function updateJpnPersonalBest() {
+            document.getElementById('jpnPersonalBest').textContent = 'JPN Personal Best: ' + jpnPersonalBest;
+        }
     </script>
 </body>
 
