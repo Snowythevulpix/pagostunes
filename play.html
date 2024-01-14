@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PagosTunes - The pokemon opening guessing game</title>
-    <meta property="og:title" content="PagosTunes - The pokemon opening guessing game"/>
+    <title>PagosTunes - The Pokemon Opening Guessing Game</title>
+    <meta property="og:title" content="PagosTunes - The Pokemon Opening Guessing Game"/>
     <meta property="og:image" content="/assets/icon.png"/>
-    <!-- Favicon -->
     <link rel="icon" href="/assets/icon.png"/>
-        <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -41,61 +40,84 @@
 
     <div>
         <input type="text" id="guessInput" placeholder="Enter your guess">
-        <button class="blue-button" id="guessButton">Guess</button>
+        <button class="blue-button" id="guessButton" disabled>Guess</button>
     </div>
 
     <script>
-        let audio = null; // Initialize the audio variable to null
+        let audio = null;
+        let points = 0;
+        let answers;
+
+// Load answers from /assets/answers.json
+fetch('/assets/answers.json')  // Adjusted the path
+    .then(response => response.json())
+    .then(data => {
+        answers = data;
+        console.log('Answers loaded successfully:', answers);
+
+        // Enable the 'Guess' button after answers are loaded
+        document.getElementById('guessButton').disabled = false;
+    })
+    .catch(error => {
+        console.error('Error loading answers:', error);
+        alert('Error loading answers. Please check the console for details.');
+    });
 
         document.getElementById('playButton').addEventListener('click', function () {
-            // Check if there is an existing audio playing, stop it before playing a new one
             if (audio && !audio.paused) {
                 audio.pause();
                 audio.currentTime = 0;
             }
 
-            // Generate a random number between 1 and 23
             const randomIndex = Math.floor(Math.random() * 23) + 1;
-
-            // Construct the URL of the random MP3 file
             const randomMP3 = `/music/jpn/op${randomIndex}.mp3`;
 
-            // Create an audio element
             audio = new Audio(randomMP3);
 
-            // Log the audio source to the console for debugging
             console.log('Attempting to play audio from:', randomMP3);
 
-            // Play the audio
             audio.play().then(() => {
                 console.log('Audio playback started successfully');
-                document.getElementById('stopButton').disabled = false; // Enable the stop button
+                document.getElementById('stopButton').disabled = false;
             }).catch(error => {
-                // Handle error, log it to console for now
                 console.error('Error playing audio:', error);
             });
         });
 
         document.getElementById('stopButton').addEventListener('click', function () {
-            // Check if audio is currently playing
             if (audio && !audio.paused) {
-                // Stop the audio
                 audio.pause();
-                // Reset the playback position to the beginning
                 audio.currentTime = 0;
                 console.log('Audio stopped');
-                document.getElementById('stopButton').disabled = true; // Disable the stop button
+                document.getElementById('stopButton').disabled = true;
             }
         });
 
         document.getElementById('guessButton').addEventListener('click', function () {
-            // Get the user's guess from the input box
             const userGuess = document.getElementById('guessInput').value;
 
-            // You can add your logic to check the guess against the correct answer
-            console.log('User guess:', userGuess);
+            if (audio) {
+                const audioName = audio.src.split('/').pop().split('.')[0];
 
-            // Clear the input box after processing the guess
+                if (answers && audioName in answers) {
+                    const correctAnswerTranslated = answers[audioName].translated;
+                    const correctAnswerRomanized = answers[audioName].romanized;
+
+                    if (userGuess.toLowerCase() === correctAnswerTranslated.toLowerCase() ||
+                        userGuess.toLowerCase() === correctAnswerRomanized.toLowerCase()) {
+                        points += 100;
+                        console.log('Correct guess! Points:', points);
+                    } else {
+                        console.log('Incorrect guess. Try again!');
+                        console.log('Correct Answer:', correctAnswerTranslated);
+                    }
+                } else {
+                    console.error('Answer not found for audio:', audioName);
+                }
+            } else {
+                console.error('No audio playing. Press "Play Random Song" first.');
+            }
+
             document.getElementById('guessInput').value = '';
         });
     </script>
