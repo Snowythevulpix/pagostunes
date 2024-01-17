@@ -163,26 +163,54 @@
 
         document.getElementById('guessButton').addEventListener('click', function () {
             const userGuess = document.getElementById('guessInput').value;
+            const userGuessLowerCase = userGuess.toLowerCase();
 
             if (audio) {
-                audio.pause();  // Pause the audio when the user makes a guess
+                audio.pause();
                 const audioName = audio.src.split('/').pop().split('.')[0];
 
                 if (answers && audioName in answers) {
                     const correctAnswerTranslated = answers[audioName];
 
-                    if (userGuess.toLowerCase() === correctAnswerTranslated.toLowerCase()) {
-                        points += 100;
-                        console.log('Correct guess! Points:', points);
-                        updateScore();
+                    if (Array.isArray(correctAnswerTranslated)) {
+                        // Check if the user's guess matches any of the correct answers
+                        if (correctAnswerTranslated.some(answer => answer.toLowerCase() === userGuessLowerCase)) {
+                            points += 100;
+                            console.log('Correct guess! Points:', points);
+                            updateScore();
 
-                        if (points > jpnPersonalBest) {
-                            jpnPersonalBest = points;
-                            updateJpnPersonalBest();
-                            // Save Japanese personal best to local storage
-                            localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
+                            if (points > jpnPersonalBest) {
+                                jpnPersonalBest = points;
+                                updateJpnPersonalBest();
+                                localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
 
-                            // Make a request to update the server with the new personal best
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Failed to update server');
+                                            }
+                                            console.log('Server updated successfully');
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating server:', error);
+                                        });
+                                }
+                            }
+
+                            document.getElementById('message').textContent = '';
+
+                            if (Math.random() < 0.1) {
+                                document.getElementById('popup').style.display = 'block';
+                            }
+                        } else {
+                            console.log('Incorrect guess. Try again!');
+                            console.log('Correct Answers:', correctAnswerTranslated);
+
+                            points = 0;
+                            updateScore();
+
                             const userId = localStorage.getItem('userId');
                             if (userId) {
                                 fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
@@ -196,45 +224,70 @@
                                         console.error('Error updating server:', error);
                                     });
                             }
-                        }
 
-                        document.getElementById('message').textContent = ''; // Clear previous messages
-
-                        // Show popup with 1/10 chance
-                        if (Math.random() < 0.1) {
-                            document.getElementById('popup').style.display = 'block';
+                            document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
                     } else {
-                        console.log('Incorrect guess. Try again!');
-                        console.log('Correct Answer:', correctAnswerTranslated);
+                        // Handle the case where correctAnswerTranslated is a single string
+                        if (userGuessLowerCase === correctAnswerTranslated.toLowerCase()) {
+                            points += 100;
+                            console.log('Correct guess! Points:', points);
+                            updateScore();
 
-                        // Reset points to 0 for incorrect guesses and update the server
-                        points = 0;
-                        updateScore();
+                            if (points > jpnPersonalBest) {
+                                jpnPersonalBest = points;
+                                updateJpnPersonalBest();
+                                localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
 
-                        // Make a request to update the server with the new personal best
-                        const userId = localStorage.getItem('userId');
-                        if (userId) {
-                            fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to update server');
-                                    }
-                                    console.log('Server updated successfully');
-                                })
-                                .catch(error => {
-                                    console.error('Error updating server:', error);
-                                });
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Failed to update server');
+                                            }
+                                            console.log('Server updated successfully');
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating server:', error);
+                                        });
+                                }
+                            }
+
+                            document.getElementById('message').textContent = '';
+
+                            if (Math.random() < 0.1) {
+                                document.getElementById('popup').style.display = 'block';
+                            }
+                        } else {
+                            console.log('Incorrect guess. Try again!');
+                            console.log('Correct Answer:', correctAnswerTranslated);
+
+                            points = 0;
+                            updateScore();
+
+                            const userId = localStorage.getItem('userId');
+                            if (userId) {
+                                fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Failed to update server');
+                                        }
+                                        console.log('Server updated successfully');
+                                    })
+                                    .catch(error => {
+                                        console.error('Error updating server:', error);
+                                    });
+                            }
+
+                            document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
-
-                        document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                     }
+
+                    document.getElementById('playButton').disabled = false;
                 } else {
                     console.error('Answer not found for audio:', audioName);
                 }
-
-                // Re-enable the 'Play Random Song' button
-                document.getElementById('playButton').disabled = false;
             } else {
                 console.error('No audio playing. Press "Play Random Song" first.');
             }
