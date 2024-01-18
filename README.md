@@ -20,3 +20,4 @@ PagosTunes is a fun and interactive web application where users can challenge th
 3. Listen to the Pokémon opening track instrumental.
 4. Guess the title of the track.
 5. Check your score and challenge yourself to improve!
+6. Sync your discord account to show off your points to your friends
