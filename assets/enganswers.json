@@ -10,7 +10,7 @@
     "op9": "Battle Frontier",
     "op10": "Diamond and Pearl",
     "op11": "We Will Be Heroes",
-    "op12": "Battle Cry - (Stand Up!)",
+    "op12": ["Battle Cry", "Stand Up!"],
     "op13": "We Will Carry On!",
     "op14": "Black and White",
     "op15": "Rival Destinies",
