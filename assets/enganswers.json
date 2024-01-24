@@ -15,7 +15,7 @@
     "op14": "Black and White",
     "op15": "Rival Destinies",
     "op16": "It's Always You and Me",
-    "op17": "Pokémon Theme (Version XY)",
+    "op17": "Pokémon Theme XY",
     "op18": "Be a Hero",
     "op19": "Stand Tall",
     "op20": "Under The Alolan Sun",
@@ -24,7 +24,7 @@
     "op23": "The Journey Starts Today",
     "op24": "Journey to Your Heart",
     "op25": "With You",
-    "op26": "Gotta Catch Em All",
+    "op26": ["Gotta Catch Em All","pokemon theme ultimate Journey's"],
     "op27": "Becoming Me"
   }
   
