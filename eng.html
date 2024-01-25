@@ -147,7 +147,7 @@
                 // Make a request to update the server with the new personal best
                 const userId = localStorage.getItem('userId');
                 if (userId) {
-                    fetch(`https://pagosmusic.xyz/update/${userId}/eng/${engPersonalBest}`)
+                    fetch(`https://pagosmusic.xyz/update/${userId}/${engPersonalBest}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Failed to update server');
