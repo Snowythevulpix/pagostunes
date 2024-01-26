@@ -316,6 +316,33 @@
             document.body.style.backgroundColor = darkMode ? '#222' : '#fff';
             document.body.style.color = darkMode ? '#fff' : '#000';
         }
+
+                // Function to play a specific Pokémon opening
+                function playSpecificOpening(openingNumber) {
+            if (audio && !audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+
+            const specificMP3 = `/music/jpn/op${openingNumber}.mp3`;
+
+            audio = new Audio(specificMP3);
+
+            console.log('Attempting to play audio from:', specificMP3);
+
+            audio.play().then(() => {
+                console.log('Audio playback started successfully');
+                document.getElementById('stopButton').disabled = false;
+                document.getElementById('playButton').disabled = true;
+                document.getElementById('message').textContent = '';
+            }).catch(error => {
+                console.error('Error playing audio:', error);
+            });
+        }
+
+        // Attach the function to the global window object
+        window.playSpecificOpening = playSpecificOpening;
+
     </script>
 
 </body>
