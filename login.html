@@ -27,29 +27,29 @@
             }
 
             fetch('https://discord.com/api/users/@me', {
-                headers: {
-                    authorization: `${tokenType} ${accessToken}`,
-                },
-            })
-            .then(result => result.json())
-            .then(response => {
-                const { id, discriminator, avatar } = response;
+    headers: {
+        authorization: `${tokenType} ${accessToken}`,
+    },
+})
+.then(result => result.json())
+.then(response => {
+    const { id, discriminator, avatar, username } = response;
 
-                // Set the welcome username string
-                document.getElementById('name').innerText = `Hello ${id}, please press below to continue`;
+    // Set the welcome username string
+    document.getElementById('name').innerText = `Hello ${username}, please press below to continue`;
 
-                // Set the avatar image by constructing a URL to access Discord's CDN
-                const avatarUrl = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`;
-                document.getElementById("avatar").src = avatarUrl;
+    // Set the avatar image by constructing a URL to access Discord's CDN
+    const avatarUrl = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`;
+    document.getElementById("avatar").src = avatarUrl;
 
-                // Save the user's ID locally using localStorage
-                localStorage.setItem('userId', id);
+    // Save the user's ID locally using localStorage
+    localStorage.setItem('userId', id);
 
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                // Handle errors here (e.g., display an error message)
-            });
+})
+.catch(error => {
+    console.error('Error fetching user data:', error);
+    // Handle errors here (e.g., display an error message)
+});
         };
     </script>
 </body>
