@@ -168,6 +168,22 @@
                                 engPersonalBest = points;
                                 updateengPersonalBest();
                                 localStorage.setItem('engPersonalBest', engPersonalBest);
+
+                                // Make request to update eng personal best score on the server
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update_eng/${userId}/${engPersonalBest}`)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('eng personal best score updated successfully');
+                                            } else {
+                                                console.error('Failed to update eng personal best score');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating eng personal best score:', error);
+                                        });
+                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -195,6 +211,22 @@
                                 engPersonalBest = points;
                                 updateengPersonalBest();
                                 localStorage.setItem('engPersonalBest', engPersonalBest);
+
+                                // Make request to update eng personal best score on the server
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update_eng/${userId}/${engPersonalBest}`)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('eng personal best score updated successfully');
+                                            } else {
+                                                console.error('Failed to update eng personal best score');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating eng personal best score:', error);
+                                        });
+                                }
                             }
 
                             document.getElementById('message').textContent = '';

@@ -168,6 +168,22 @@
                                 jpnPersonalBest = points;
                                 updateJpnPersonalBest();
                                 localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
+
+                                // Make request to update JPN personal best score on the server
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update_jpn/${userId}/${jpnPersonalBest}`)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('JPN personal best score updated successfully');
+                                            } else {
+                                                console.error('Failed to update JPN personal best score');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating JPN personal best score:', error);
+                                        });
+                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -195,6 +211,22 @@
                                 jpnPersonalBest = points;
                                 updateJpnPersonalBest();
                                 localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
+
+                                // Make request to update JPN personal best score on the server
+                                const userId = localStorage.getItem('userId');
+                                if (userId) {
+                                    fetch(`https://pagosmusic.xyz/update_jpn/${userId}/${jpnPersonalBest}`)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('JPN personal best score updated successfully');
+                                            } else {
+                                                console.error('Failed to update JPN personal best score');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error updating JPN personal best score:', error);
+                                        });
+                                }
                             }
 
                             document.getElementById('message').textContent = '';
