@@ -74,7 +74,7 @@
     </div>
 
     <div id="score">Score: 0</div>
-    <div id="engPersonalBest">ENG Personal Best: 0</div>
+    <div id="engPersonalBest">eng Personal Best: 0</div>
     <div id="message"></div>
 
     <div id="popup">
@@ -90,10 +90,10 @@
         let answers;
         let darkMode = false;
 
-        // Load English personal best from local storage
+        // Load Japanese personal best from local storage
         if (localStorage.getItem('engPersonalBest')) {
             engPersonalBest = parseInt(localStorage.getItem('engPersonalBest'));
-            updateEngPersonalBest();
+            updateengPersonalBest();
         }
 
         // Load answers from the provided JSON file
@@ -143,21 +143,6 @@
                 document.getElementById('playButton').disabled = false; // Enable Play button
                 points = 0; // Reset points to 0 when stopping
                 updateScore();
-
-                // Make a request to update the server with the new personal best
-                const userId = localStorage.getItem('userId');
-                if (userId) {
-                    fetch(`https://pagosmusic.xyz/update/${userId}/${engPersonalBest}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to update server');
-                            }
-                            console.log('Server updated successfully');
-                        })
-                        .catch(error => {
-                            console.error('Error updating server:', error);
-                        });
-                }
             }
         });
 
@@ -181,22 +166,8 @@
 
                             if (points > engPersonalBest) {
                                 engPersonalBest = points;
-                                updateEngPersonalBest();
+                                updateengPersonalBest();
                                 localStorage.setItem('engPersonalBest', engPersonalBest);
-
-                                const userId = localStorage.getItem('userId');
-                                if (userId) {
-                                    fetch(`https://pagosmusic.xyz/update/${userId}/eng/${engPersonalBest}`)
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Failed to update server');
-                                            }
-                                            console.log('Server updated successfully');
-                                        })
-                                        .catch(error => {
-                                            console.error('Error updating server:', error);
-                                        });
-                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -211,20 +182,6 @@
                             points = 0;
                             updateScore();
 
-                            const userId = localStorage.getItem('userId');
-                            if (userId) {
-                                fetch(`https://pagosmusic.xyz/update/${userId}/${engPersonalBest}`)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to update server');
-                                        }
-                                        console.log('Server updated successfully');
-                                    })
-                                    .catch(error => {
-                                        console.error('Error updating server:', error);
-                                    });
-                            }
-
                             document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
                     } else {
@@ -236,22 +193,8 @@
 
                             if (points > engPersonalBest) {
                                 engPersonalBest = points;
-                                updateEngPersonalBest();
+                                updateengPersonalBest();
                                 localStorage.setItem('engPersonalBest', engPersonalBest);
-
-                                const userId = localStorage.getItem('userId');
-                                if (userId) {
-                                    fetch(`https://pagosmusic.xyz/update/${userId}/${engPersonalBest}`)
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Failed to update server');
-                                            }
-                                            console.log('Server updated successfully');
-                                        })
-                                        .catch(error => {
-                                            console.error('Error updating server:', error);
-                                        });
-                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -265,20 +208,6 @@
 
                             points = 0;
                             updateScore();
-
-                            const userId = localStorage.getItem('userId');
-                            if (userId) {
-                                fetch(`https://pagosmusic.xyz/update/${userId}/${engPersonalBest}`)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to update server');
-                                        }
-                                        console.log('Server updated successfully');
-                                    })
-                                    .catch(error => {
-                                        console.error('Error updating server:', error);
-                                    });
-                            }
 
                             document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
@@ -307,8 +236,8 @@
             document.getElementById('score').textContent = 'Score: ' + points;
         }
 
-        function updateEngPersonalBest() {
-            document.getElementById('engPersonalBest').textContent = 'ENG Personal Best: ' + engPersonalBest;
+        function updateengPersonalBest() {
+            document.getElementById('engPersonalBest').textContent = 'eng Personal Best: ' + engPersonalBest;
         }
 
         function toggleDarkMode() {
@@ -317,14 +246,14 @@
             document.body.style.color = darkMode ? '#fff' : '#000';
         }
 
-                // Function to play a specific Pokémon opening
-                function playSpecificOpening(openingNumber) {
+        // Function to play a specific Pokémon opening
+        function playSpecificOpening(openingNumber) {
             if (audio && !audio.paused) {
                 audio.pause();
                 audio.currentTime = 0;
             }
 
-            const specificMP3 = `/music/jpn/op${openingNumber}.mp3`;
+            const specificMP3 = `/music/eng/op${openingNumber}.mp3`;
 
             audio = new Audio(specificMP3);
 

@@ -143,21 +143,6 @@
                 document.getElementById('playButton').disabled = false; // Enable Play button
                 points = 0; // Reset points to 0 when stopping
                 updateScore();
-
-                // Make a request to update the server with the new personal best
-                const userId = localStorage.getItem('userId');
-                if (userId) {
-                    fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to update server');
-                            }
-                            console.log('Server updated successfully');
-                        })
-                        .catch(error => {
-                            console.error('Error updating server:', error);
-                        });
-                }
             }
         });
 
@@ -183,20 +168,6 @@
                                 jpnPersonalBest = points;
                                 updateJpnPersonalBest();
                                 localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
-
-                                const userId = localStorage.getItem('userId');
-                                if (userId) {
-                                    fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Failed to update server');
-                                            }
-                                            console.log('Server updated successfully');
-                                        })
-                                        .catch(error => {
-                                            console.error('Error updating server:', error);
-                                        });
-                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -211,20 +182,6 @@
                             points = 0;
                             updateScore();
 
-                            const userId = localStorage.getItem('userId');
-                            if (userId) {
-                                fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to update server');
-                                        }
-                                        console.log('Server updated successfully');
-                                    })
-                                    .catch(error => {
-                                        console.error('Error updating server:', error);
-                                    });
-                            }
-
                             document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
                     } else {
@@ -238,20 +195,6 @@
                                 jpnPersonalBest = points;
                                 updateJpnPersonalBest();
                                 localStorage.setItem('jpnPersonalBest', jpnPersonalBest);
-
-                                const userId = localStorage.getItem('userId');
-                                if (userId) {
-                                    fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Failed to update server');
-                                            }
-                                            console.log('Server updated successfully');
-                                        })
-                                        .catch(error => {
-                                            console.error('Error updating server:', error);
-                                        });
-                                }
                             }
 
                             document.getElementById('message').textContent = '';
@@ -265,20 +208,6 @@
 
                             points = 0;
                             updateScore();
-
-                            const userId = localStorage.getItem('userId');
-                            if (userId) {
-                                fetch(`https://pagosmusic.xyz/update/${userId}/${jpnPersonalBest}`)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to update server');
-                                        }
-                                        console.log('Server updated successfully');
-                                    })
-                                    .catch(error => {
-                                        console.error('Error updating server:', error);
-                                    });
-                            }
 
                             document.getElementById('message').textContent = 'Incorrect guess. Try again!';
                         }
