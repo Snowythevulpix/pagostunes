@@ -118,9 +118,9 @@
             }
 
             const randomIndex = Math.floor(Math.random() * 27) + 1;
-            const randomMP3 = `/music/eng/op${randomIndex}.mp3`
+            const randomMP3 = `/music/eng/op${randomIndex}.mp3`;
 
-
+            audio = new Audio(randomMP3);
 
             console.log('Attempting to play audio from:', randomMP3);
 
